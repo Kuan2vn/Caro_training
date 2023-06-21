@@ -185,8 +185,19 @@ class Gomoku:
 
     def get_state(self):
         state = self.Board()
-        state = state.reshape(-1)
-        return state
+        one_hot_state = [[0]*10]*10
+        for i in range(10):
+            for j in range(10):
+                if state[i,j] == 0:
+                    one_hot_state[i][j] = (0,0,0)
+                elif state[i,j] == 1:
+                    one_hot_state[i][j] = (0,1,0)
+                else:
+                    one_hot_state[i][j] = (0,0,1)
+        
+
+        # state = state.reshape(-1)
+        return one_hot_state
 
 
     def take_action_human(self,y,x):     
@@ -446,5 +457,8 @@ class Gomoku:
 
 if __name__ == "__main__":
     game = Gomoku(rows=10, cols=10, n_to_win=5)
+    game.action((1,1))
+    game.action((2,2))
     print(game.Board())
+    print(game.get_state())
     game.play()
