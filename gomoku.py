@@ -185,15 +185,22 @@ class Gomoku:
 
     def get_state(self):
         state = self.Board()
-        one_hot_state = [[0]*10]*10
+
+        one_hot_state = np.zeros((3,10,10), dtype=int)
         for i in range(10):
             for j in range(10):
                 if state[i,j] == 0:
-                    one_hot_state[i][j] = (0,0,0)
+                    one_hot_state[0,i,j] = 0
+                    one_hot_state[1,i,j] = 0
+                    one_hot_state[2,i,j] = 0
                 elif state[i,j] == 1:
-                    one_hot_state[i][j] = (0,1,0)
+                    one_hot_state[0,i,j] = 0
+                    one_hot_state[1,i,j] = 1
+                    one_hot_state[2,i,j] = 0
                 else:
-                    one_hot_state[i][j] = (0,0,1)
+                    one_hot_state[0,i,j] = 0
+                    one_hot_state[1,i,j] = 0
+                    one_hot_state[2,i,j] = 1
         
 
         # state = state.reshape(-1)
