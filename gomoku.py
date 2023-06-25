@@ -3,7 +3,21 @@ import pygame
 import random
 import numpy as np
 
+
 class GomokuPosition:
+    reward_almost_win = {"0" : 0,
+                     "1" : 1,
+                     "2" : 2,
+                     "3" : 3,
+                     "4" : 4
+                    }
+
+    reward_different = { "0" : 0,
+                     "1" : 1,
+                     "2" : 2,
+                     "3" : 3,
+                     "4" : 4
+                    }
     dirs = (
         ((0, -1), (0, 1)), 
         ((1, 0), (-1, 0)),
@@ -67,12 +81,50 @@ class GomokuPosition:
         )
         
     ### FOR AI
-    def almost_win(self, move):
-        return self.ply >= move * 2 - 1 and any(
-            (self.count_from_last_move(*x) +
-             self.count_from_last_move(*y) - 1 >= move)
-            for x, y in self.dirs
-        )
+
+
+    def _loang(self, x, y, colorValue, dir):
+        x += dir[0]
+        y += dir[1]
+        if x in range(10) and y in range(10):
+            if colorValue == self.to_grid()[x][y]:
+                return 1 + self._loang(x,y,colorValue,dir)
+            else:
+                return 0
+        else:
+            return 0
+
+    def almost_win_redesign(self, x, y, colorValue):
+        
+        # colorValue is 1(white), -1 (black)
+        #
+        #
+        arr = [0, 0, 0, 0]
+        for i in range(len(self.dirs)):
+            arr[i] = self._loang(x, y, colorValue, self.dirs[i][0]) + self._loang(x, y, colorValue, self.dirs[i][1])
+        Max = [max(arr) if max(arr) <= 4 else 4]
+        return self.reward_almost_win[str(Max[0])]
+
+    def almost_diff_redesign(self, x, y, colorValue):
+        
+        # colorValue is 1(white), -1 (black)
+        #
+        #
+        colorValue *= -1
+        arr = [0, 0, 0, 0]
+        for i in range(len(self.dirs)):
+            arr[i] = self._loang(x, y, colorValue, self.dirs[i][0]) + self._loang(x, y, colorValue, self.dirs[i][1])
+        Max = [max(arr) if max(arr) <= 4 else 4]
+        return self.reward_different[str(Max)]      
+
+
+
+    # def almost_win(self, move):
+    #     return self.ply >= move * 2 - 1 and any(
+    #         (self.count_from_last_move(*x) +
+    #          self.count_from_last_move(*y) - 1 >= move)
+    #         for x, y in self.dirs
+    #     )
     ###END
 
     def is_draw(self):
@@ -378,9 +430,14 @@ class Gomoku:
         col = x // self.size
         row = y // self.size
         print(row,col)
+        # print(self.board.last_player())
         if self.board.move(row, col):
             self.draw_piece(row, col)
+        colorValue = 1 if self.board.last_player() == 'w' else -1
+
+        # print("Sample color:", self.board.almost_win_redesign(row, col, colorValue))
         
+
     def play(self):
         pygame.time.Clock().tick(10)
         # self.draw_board()
@@ -465,7 +522,8 @@ class Gomoku:
 if __name__ == "__main__":
     game = Gomoku(rows=10, cols=10, n_to_win=5)
     game.action((1,1))
-    game.action((2,2))
-    print(game.Board())
-    print(game.get_state())
+    # game.action((2,2))
+    # print(game.board.to_grid())
+    # print(game.Board())
+    # print(game.get_state())
     game.play()
