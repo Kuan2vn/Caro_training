@@ -1,2 +1,2 @@
 
-# env.show_outcome()
+            self.player_colors[player], 
