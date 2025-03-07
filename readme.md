@@ -35,6 +35,14 @@ When the model completed training, we can save the model with the function *agen
 
 To load the model saved state with a .pth file, you must first create a model with the same amount of layers and units per layer, then you can load the last model state with the function self.model.load_state_dict(torch.load(‘.pth’)). 
 
+## Publication
+
+**This project is presented in the following publication:**
+
+[![DRL_caro.pdf](DRL_caro.pdf)](DRL_caro.pdf)
+
+**[Download paper PDF - DRL_caro.pdf](DRL_caro.pdf)**
+
 ## Summary
 Finally, to test the training code, you can run the *train.py* 
 <br>Or, you can find training example in colab *Actor_Critic_Example.ipynb.* and my old DQN model in Example folder.
