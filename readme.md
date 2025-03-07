@@ -37,11 +37,9 @@ To load the model saved state with a .pth file, you must first create a model wi
 
 ## Publication
 
-**This project is presented in the following publication:**
+**Project published at VNICT 2023.**
 
-[![DRL_caro.pdf](DRL_caro.pdf)](DRL_caro.pdf)
-
-**[Download paper PDF - DRL_caro.pdf](DRL_caro.pdf)**
+**[Deep reinforcement learning for Playing Caro Game without human feedback](DRL_Caro.pdf)**
 
 ## Summary
 Finally, to test the training code, you can run the *train.py* 
